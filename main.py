@@ -156,7 +156,7 @@ def run_streamlit(users, products):
                 display_recommendations(product_ids, description, confidence, products)
                 
                 # Show customer clusters visualization
-                _, cluster_img = customer_agent(users)
+                _, cluster_img = customer_agent(users,products)
                 st.subheader("Customer Segmentation Insights")
                 st.image(cluster_img, use_container_width=True)
                 
@@ -202,7 +202,7 @@ def main():
     users, products = load_data("data/customer_data_collection.csv", "data/product_recommendation_data.csv")
     
     # Process data through agents
-    users, _ = customer_agent(users)
+    users, _ = customer_agent(users, products)
     products = product_agent(products)
     
     # Run Streamlit interface

@@ -87,7 +87,7 @@ def recommendation_agent(customer_id, users, products, ollama_enabled=True):
         if ollama_enabled:
             try:
                 prompt = (
-                    f"Create a 2-3 sentence recommendation for a customer who likes {preferred_category}. "
+                    f"Create a 2-3 sentence sugercoated informal recommendation for a customer who likes {preferred_category}. "
                     f"Product: {top_product['Brand']} {top_product['Subcategory']} "
                     f"(Rating: {top_product['Product_Rating']}/5, Price: ${top_product['Price']}). "
                     f"Customer sentiment: {top_product['Customer_Review_Sentiment_Score']:.1f}."
