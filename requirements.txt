@@ -1,0 +1,9 @@
+streamlit
+pandas
+sqlite3
+psutil
+subprocess
+numpy
+matplotlib
+scikit-learn
+ollama
