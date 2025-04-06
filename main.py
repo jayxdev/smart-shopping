@@ -44,6 +44,7 @@ def display_customer_profile(customer_id, users):
     st.sidebar.subheader("Customer Profile")
     st.sidebar.write(f"**ID:** {customer['Customer_ID']}")
     st.sidebar.write(f"**Age:** {customer['Age']}")
+    st.sidebar.write(f"**Gender:** {customer['Gender']}")
     st.sidebar.write(f"**Location:** {customer['Location']}")
     st.sidebar.write(f"**Segment:** {customer['Customer_Segment']}")
     st.sidebar.write(f"**Avg Order Value:** ${customer['Avg_Order_Value']:.2f}")
@@ -101,7 +102,7 @@ def display_recommendations(product_ids, description, confidences, products):
             st.caption("Sentiment ranges from -1 (negative) to +1 (positive)")
     
     # Recommendation explanation
-    st.subheader("🔍 Why We Recommend This")
+    st.subheader("🔍 Recommendation Message")
     if isinstance(description, (list, tuple)):
         st.info(description[0] if description else "No description available")
     else:
@@ -111,12 +112,14 @@ def display_recommendations(product_ids, description, confidences, products):
 def run_streamlit(users, products):
     """Main Streamlit application interface"""
     # Try to start Ollama server automatically
+    
     ollama_process = start_ollama_server()
     ollama_available = ollama_process is not None
     
     # Set page config
     st.set_page_config(layout="wide", page_title="Smart Shopping Assistant")
     
+    k=st.sidebar.slider("Clusters", 2, 24, 12,2, help="Number of clusters for customer segmentation")
     # Add cleanup handler
     def cleanup():
         if ollama_process:
@@ -156,9 +159,9 @@ def run_streamlit(users, products):
                 display_recommendations(product_ids, description, confidence, products)
                 
                 # Show customer clusters visualization
-                _, cluster_img = customer_agent(users,products)
+                _, cluster_img = customer_agent(users,products, n_clusters=k)
                 st.subheader("Customer Segmentation Insights")
-                st.image(cluster_img, use_container_width=True)
+                st.plotly_chart(cluster_img, use_container_width=True)
                 
                 # Show recommendation history
                 conn = sqlite3.connect("ecommerce.db")
@@ -207,6 +210,5 @@ def main():
     
     # Run Streamlit interface
     run_streamlit(users, products)
-
 if __name__ == "__main__":
     main()
