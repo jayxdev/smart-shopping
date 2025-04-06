@@ -1,7 +1,6 @@
 streamlit
 pandas
 psutil
-subprocess
 numpy
 matplotlib
 scikit-learn
